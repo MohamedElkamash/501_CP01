@@ -4,9 +4,6 @@ from sympy import *
 from sympy.utilities.lambdify import implemented_function
 import numpy as np
 
-#steady state temperature
-Tss = T0*(0.5 + 3/pi**2)
-
 #computes the constants of the summation
 def computeCn(eigenvalues):
 
@@ -28,16 +25,22 @@ def computeCn(eigenvalues):
     
     return(c)
 
-def computeAnalyticalTempDistr(r, t, n):
-    y = computeEigenvalues()
-    c = computeCn(y)
-    #sum = np.zeros(len(r))
-    sum = 0
+class AnalyticalTemperature:
 
-    for i in range(n):
-        sum = sum + c[i] * np.sin(y[i]*r) / r * np.exp(-alpha * y[i] * t)
-    T = Tss + sum
-    return T
+    def __init__(self):
+        #steady state temperature
+        self.Tss = T0*(0.5 + 3/pi**2)
+        #eigenvalues
+        self.y = computeEigenvalues()
+        #summation constants
+        self.c = computeCn(self.y)
+
+    def compute(self, r, t, n):
+        sum = 0
+        for i in range(n):
+            sum = sum + self.c[i] * np.sin(self.y[i]*r) / r * np.exp(-alpha * self.y[i] * t)
+        T = self.Tss + sum
+        return T
 
 
 
