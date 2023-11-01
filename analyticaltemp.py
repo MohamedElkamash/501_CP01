@@ -36,9 +36,10 @@ class AnalyticalTemperature:
         self.c = computeCn(self.y)
 
     def compute(self, r, t, n):
-        sum = 0
+        sum = np.zeros(len(r))
         for i in range(n):
-            sum = sum + self.c[i] * np.sin(self.y[i]*r) / r * np.exp(-alpha * self.y[i] * t)
+            sum[0] = sum[0] + self.c[i] * self.y[i] * np.exp(-alpha * self.y[i]**2 * t)
+            sum[1:len(r)] = sum[1:len(r)] + self.c[i] * np.sin(self.y[i]*r[1:len(r)]) / r[1:len(r)] * np.exp(-alpha * self.y[i]**2 * t)
         T = self.Tss + sum
         return T
 
