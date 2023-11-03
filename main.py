@@ -8,70 +8,55 @@ import matplotlib.pyplot as plt
 
 #import finitedifference as fd
 
-""" def relChange(x,y):
-    return np.max(np.abs((x-y)/x)) """
+def relChange(x,y):
+    return np.max(np.abs((x-y)/x)) 
 
+#analytical_temperature = AnalyticalTemperature()
 
-#Plotting and printing eigenvalues
-""" plot.eigenvalues()
-export.eigenvalues()  """
+""" #Plotting and printing eigenvalues
+plot.eigenvalues()
+export.eigenvalues()  
 
 #compute and export c_n
-#analytical_temperature = AnalyticalTemperature()
-""" c_n = analytical_temperature.getCn()
-export.cn(c_n) """
+c_n = analytical_temperature.getCn()
+export.cn(c_n)  """
 
 #define timestamps and mesh
+n_terms = 5
 n_timestamps = 7
+n_elements_analytical = 100
 t_max = 60
 timestamps = np.linspace(0, t_max, n_timestamps)
-n_elements_analytical = 100
-r_analytical = np.linspace(0, R, n_elements_analytical)
-n_terms = 5
+r_analytical = np.linspace(0, R, n_elements_analytical+1)
+T_analytical = np.empty([n_elements_analytical+1, n_timestamps])
 rel_change = np.empty([n_timestamps, n_terms - 1])
 T_temp = 0
 
-fig_analytical, axs = plt.subplots(4,2, figsize = (50,50))
-plt.setp(axs, xlabel="r (cm)", xticks=np.arange(0,3.1,0.5), yticks=np.arange(0,501,100), xlim=(0,3), ylim=(0,5))
-fig_analytical.delaxes(axs[3,1])
-#plt.show()
-plt.savefig("fig.png", bbox_inches='tight', dpi = 400)
-""" ax_eigen.set_ylabel('tan($\lambda$R)-$\lambda$R', fontsize = 11)
-ax_eigen.set_xticks(np.arange(0,1201,200))
-ax_eigen.set_yticks(np.arange(-40,41,20))
-ax_eigen.set_xlim(0,1200)
-ax_eigen.set_ylim(-40,40)
-ax_eigen.tick_params(axis = 'both', labelsize = 11)
-ax_eigen.plot(x,y)
-ax_eigen.axhline(0, color = 'r')
-plt.savefig("Eigen.png", bbox_inches='tight', dpi = 400)  """
+fig_analytical, axs = plt.subplots(3,3, figsize = (15.0,12.0))
+plt.setp(axs, xlabel="r (cm)", xticks=np.arange(0,3.1,0.5), yticks=np.arange(0,501,100), xlim=(0,3), ylim=(0,500))
+plt.setp(axs[0,0], ylabel = "T(r,0) ($^oC$)")
+plt.setp(axs[0,1], ylabel = "T(r,10) ($^oC$)")
+plt.setp(axs[0,2], ylabel = "T(r,20) ($^oC$)")
+plt.setp(axs[1,0], ylabel = "T(r,30) ($^oC$)")
+plt.setp(axs[1,1], ylabel = "T(r,40) ($^oC$)")
+plt.setp(axs[1,2], ylabel = "T(r,50) ($^oC$)")
+plt.setp(axs[2,1], ylabel = "T(r,60) ($^oC$)")
+fig_analytical.delaxes(axs[2,0])
+fig_analytical.delaxes(axs[2,2])
+legend_T_analytical_individual = [] 
 
 
-""" m_to_cm = 100
 
-#figure of seven cases
-plt.figure(0)
-plt.title("Analytical Temperature Distribution")
-plt.xlabel("r (cm)")
-plt.ylabel("T(r) (degC)")
-legend_T_all = [] """
-
-for i in range(n_timestamps):
-    #create figure
-    """plt.figure(i+1)
-    plt.title("Analytical Temperature Distribution at t = " + str(int(t[i])))
-    plt.xlabel("r (cm)")
-    plt.ylabel("T(r," + str(int(t[i])) + ") (degC)")
-    legend_T = [] """
-
-    #plot analytical temperature distribution for different number of terms in the summation
+""" for i in range(n_timestamps):
     for j in range(1, n_terms+1):
-        #T_anal = analytical_temperature.compute(r_analytical, timestamps[i], j)
-        
-        """if j != 1:
+        T_anal = analytical_temperature.compute(r_analytical, timestamps[i], j)
+        if j != 1:
             rel_change[i,j-2] = relChange(T_temp, T_anal)
+        T_temp = T_anal
+    T_analytical[:,i] = T_anal  """
 
-        T_temp = T_anal """
+plt.savefig("fig.png", bbox_inches='tight', dpi = 400)
+
 
 #export.relChange(rel_change)
         

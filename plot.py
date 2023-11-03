@@ -16,3 +16,5 @@ def eigenvalues():
     ax_eigen.plot(x,y)
     ax_eigen.axhline(0, color = 'r')
     plt.savefig("Eigen.png", bbox_inches='tight', dpi = 400)
+
+
