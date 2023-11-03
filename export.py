@@ -8,4 +8,7 @@ def eigenvalues():
 
 def cn(c_n):
     np.savetxt("cn.csv", c_n, delimiter = ',')
+
+def relChange(rel_change):
+    np.savetxt("relChange.csv", rel_change, delimiter = ',')
     
