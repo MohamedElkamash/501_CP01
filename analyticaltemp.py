@@ -34,6 +34,9 @@ class AnalyticalTemperature:
         self.y = computeEigenvalues()
         #summation constants
         self.c = computeCn(self.y)
+    
+    def getCn(self):
+        return self.c
 
     def compute(self, r, t, n):
         sum = np.zeros(len(r))

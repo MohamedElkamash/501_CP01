@@ -1,41 +1,28 @@
-from inputparameters import R, alpha, T0
+import plot
+import export
 from analyticaltemp import AnalyticalTemperature
-import numpy as np
-import matplotlib.pyplot as plt
 
-n_elements = 20
-delta_r = R/n_elements
-r = np.linspace(0, R, n_elements+1)
-delta_t = 0.1
-t_max = 60
-t = np.linspace(0, t_max, int(t_max/delta_t) + 1)
+""" from inputparameters import R, alpha, T0
 
-T = np.empty((len(r), len(t)))
+import finitedifference as fd
+ """
 
-b = alpha*delta_t/delta_r
 
-#initial condition
-T[:,0] = T0/2 * (1 - np.cos(np.pi * r / R))
+#Plotting and printing eigenvalues
+plot.eigenvalues()
+export.eigenvalues()
 
-for l in range(1, len(t)):
-    #interior points
-    for i in range(1, len(r)-1):
-        T[i,l] = T[i,l-1] + b/delta_r * (T[i+1,l-1] - 2*T[i,l-1] + T[i-1,l-1]) + b/r[i] * (T[i+1,l-1] - T[i-1,l-1])
-    
-    #boundary points
-    I = len(r) - 1
-    T[0,l] = T[0,l-1] + 2*b/delta_r * (T[1,l-1] - T[0,l-1])
-    T[I,l] = T[I,l-1] + 2*b/delta_r * (T[I-1,l-1] - T[I,l-1])
-
-plt.plot(r, T[:,600])
-plt.yticks(np.arange(0, 501, step=100))
-plt.show() 
+#compute and export c_n
+analytical_temperature = AnalyticalTemperature()
+c_n = analytical_temperature.getCn()
+export.cn(c_n)
 
 
 
 
 
-
+""" y = computeEigenvalues()
+print(y) """
 
 
 """ m_to_cm = 100
@@ -82,7 +69,52 @@ for i in range(n_timestamps):
 plt.figure(0)
 plt.legend(legend_T_all)
 plt.yticks(np.arange(0, 501, step=100))
-plt.savefig("T(r).png", dpi = 400)
+plt.savefig("T(r).png", dpi = 400) """
+
+""" n_elements = 2
+delta_r = R/n_elements
+n_grid_trials = 6
+delta_t = 0.1
+t_max = 60
+t = np.linspace(0, t_max, int(t_max/delta_t) + 1)
+plt.figure(0)
+legend_T = []
+
+for i in range(n_grid_trials):
+    delta_r = R/n_elements
+    r = np.linspace(0, R, n_elements+1)
+    T = fd.computeT(r, t, delta_r, delta_t)
+    plt.plot(r, T[:,50])
+    legend_T.append("n = " + str(n_elements))
+    n_elements *= 2
+
+plt.yticks(np.arange(0, 501, step=100))
+plt.legend(legend_T)
+plt.savefig("1.png")
+
+plt.figure(1)
+legend_T2 = []
+
+delta_t = 0.028
+for i in range(3):
+    t = np.linspace(0, t_max, int(t_max/delta_t) + 1)
+    T = fd.computeT(r, t, delta_r, delta_t)
+    plt.plot(t, T[int(len(r)/2),:])
+    legend_T2.append("delta_t = " + str(delta_t))
+    delta_t /= 2
+
+plt.yticks(np.arange(0, 501, step=100))
+plt.legend(legend_T2)
+plt.savefig("2.png") """
 
 
- """
+
+
+
+
+
+
+
+
+
+ 
