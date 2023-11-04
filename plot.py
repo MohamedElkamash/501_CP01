@@ -17,6 +17,7 @@ def eigenvalues():
     ax_eigen.plot(x,y)
     ax_eigen.axhline(0, color = 'r')
     plt.savefig("Eigen.png", bbox_inches='tight', dpi = 400)
+    plt.close()
 
 def analytical(T_analytical):
     fig_analytical, ax_analytical = plt.subplots()
@@ -33,5 +34,17 @@ def analytical(T_analytical):
         legend_T_analytical.append("t = " + str(int(timestamps[i])) + "s")
     plt.legend(legend_T_analytical)
     plt.savefig("analytical.png", bbox_inches='tight', dpi = 400)
+    plt.close()
+
+def seven_subplots():
+    fig_T, axs = plt.subplots(3,3, figsize = (15.0,12.0))
+    axs_list = [axs[0,0], axs[0,1], axs[0,2], axs[1,0], axs[1,1], axs[1,2], axs[2,1]]
+    plt.setp(axs, xlabel="r (cm)", xticks=np.arange(0,3.1,0.5), yticks=np.arange(0,501,100), xlim=(0,3), ylim=(0,500))
+    legend_T_analytical_individual = []
+    for i in range(len(timestamps)):
+        plt.setp(axs_list[i], ylabel = "T(r," + str(int(timestamps[i])) + ") ($^oC$)")
+    fig_T.delaxes(axs[2,0])
+    fig_T.delaxes(axs[2,2])
+    return fig_T, axs, axs_list
 
 
