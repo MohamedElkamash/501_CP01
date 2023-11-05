@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 def relChange(x,y):
     return np.max(np.abs((x-y)/x))
 
-""" #create analytical temperature object
+#create analytical temperature object
 analytical_temperature = AnalyticalTemperature()
 
 #Plotting and printing eigenvalues
@@ -39,10 +39,6 @@ for i in range(n_timestamps):
         axs_analytical_list[i].plot(r_analytical*m_to_cm, T_analytical[:,i])
         if j != 1:
             rel_change[i,j-2] = relChange(T_temp, T_analytical[:,i])
-            if i==0 and j == 3:
-                print(T_temp)
-                print("hey")
-                print(T_analytical[:,i])
         T_temp = T_anal
 
 export.relChange(rel_change) 
@@ -51,7 +47,7 @@ plt.savefig("Cn.png", bbox_inches='tight', dpi = 400)
 plt.close()
 
 #plotting analytical temperature
-plot.analytical(T_analytical)  """ 
+plot.analytical(T_analytical)  
 
 
 #Grid Refinment
@@ -119,3 +115,21 @@ plt.legend(legend_time_step, loc = "center", bbox_to_anchor = (1.6, 0.5), fontsi
 plt.savefig("time_step.png", bbox_inches='tight', dpi = 400)
 plt.close()
 
+
+#final numerical evaluation
+n_elements = 32
+delta_r = R/n_elements
+r = np.linspace(0, R, n_elements+1)
+delta_t = 0.05
+t = np.linspace(0, t_max, int(t_max/delta_t) + 1)
+T_numerical = fd.computeT(r, t, delta_r, delta_t)
+
+fig_comparison, axs_comparison, axs_comparison_list = plot.seven_subplots()
+legend_comparison = ["Analytical", "Numerical"]
+for j in range(len(timestamps)):
+    axs_comparison_list[j].plot(r_analytical*m_to_cm, T_analytical[:, j])
+    axs_comparison_list[j].plot(r*m_to_cm, T_numerical[:,int(timestamps[j]/delta_t)])
+
+plt.legend(legend_comparison, loc = "center", bbox_to_anchor = (1.6, 0.5), fontsize = 15)
+plt.savefig("compare.png", bbox_inches='tight', dpi = 400)
+plt.close()
